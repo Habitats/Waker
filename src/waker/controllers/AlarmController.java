@@ -69,11 +69,11 @@ public class AlarmController implements WakerAlarmListener {
     hoursCombobox.setValue(String.valueOf(alarm.getHours()));
     minutesCombobox.setValue(String.valueOf(alarm.getMinutes()));
     datePicker.setValue(alarm.getDate());
-    initContextMenu();
+    alarmToggle.setSelected(alarm.isEnabled());
+    alarmToggle.setText(alarmToggle.isSelected() ? "On" : "Off");
+    soundLabel.setText(alarm.getSoundFileName());
 
-    onHoursChanged(null);
-    onMinutesChanged(null);
-    updateSettings(null);
+    initContextMenu();
   }
 
   private void initContextMenu() {
@@ -140,13 +140,8 @@ public class AlarmController implements WakerAlarmListener {
 //    Log.v(volume);
   }
 
-  public void updateSettings(ActionEvent actionEvent) {
-    if (alarm == null) {
-      return;
-    }
+  public void onDateSelected(ActionEvent actionEvent) {
     alarm.setDate(datePicker.getValue());
-    alarmToggle.setText(alarmToggle.isSelected() ? "On" : "Off");
-    alarm.setEnabled(alarmToggle.isSelected());
   }
 
   public void onMinutesChanged(ActionEvent actionEvent) {
@@ -174,15 +169,12 @@ public class AlarmController implements WakerAlarmListener {
     }
   }
 
-  public String getId() {
-    return alarm.getId();
-  }
-
-  public Properties getProperties() {
-    return alarm.getProperties();
-  }
-
   public void saveState(Properties props) {
     alarm.saveState(props);
+  }
+
+  public void onAlarmToggle(ActionEvent actionEvent) {
+    alarmToggle.setText(alarmToggle.isSelected() ? "On" : "Off");
+    alarm.setEnabled(alarmToggle.isSelected());
   }
 }

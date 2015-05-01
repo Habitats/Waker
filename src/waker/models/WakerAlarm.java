@@ -166,7 +166,7 @@ public class WakerAlarm {
     return formatted;
   }
 
-  private String getSoundFileName() {
+  public String getSoundFileName() {
     return soundFile == null ? "No sound! " : soundFile.getName();
   }
 
@@ -175,22 +175,15 @@ public class WakerAlarm {
     return String.format("%s - %s - %s", getFormattedUntil(), getFireDate(), getSoundFileName());
   }
 
-  public String getId() {
-    return id;
-  }
-
-  public Properties getProperties() {
-    Properties props = new Properties();
-
-    return props;
-  }
-
   public static WakerAlarm fromProperties(String id, Properties props, AlarmController alarmController) {
     String propSoundPath = props.getProperty(SOUND_PATH + id);
     String propFireDate = props.getProperty(FIRE_DATE + id);
     String propEnabled = props.getProperty(ENABLED + id);
 
-    File soundFile = new File(propSoundPath);
+    File soundFile = null;
+    if (!propSoundPath.equals("null")) {
+      soundFile = new File(propSoundPath);
+    }
     long epochSecond = Long.parseLong(propFireDate);
     LocalDateTime fireDate = LocalDateTime.ofEpochSecond(epochSecond, 0, ZoneOffset.UTC);
     boolean enabled = Boolean.parseBoolean(propEnabled);
@@ -200,9 +193,10 @@ public class WakerAlarm {
 
   public void saveState(Properties props) {
     props.setProperty(ID + id, id);
-    props.setProperty(SOUND_PATH + id, soundFile != null ? soundFile.getAbsolutePath() : "");
+    props.setProperty(SOUND_PATH + id, soundFile != null ? soundFile.getAbsolutePath() : "null");
     props.setProperty(FIRE_DATE + id, String.valueOf(fireDate.toEpochSecond(ZoneOffset.UTC)));
     props.setProperty(ENABLED + id, String.valueOf(enabled));
+    Log.v(enabled);
   }
 
   public int getHours() {
