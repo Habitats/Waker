@@ -33,11 +33,11 @@ public class WakerAlarm {
 
   public WakerAlarm(WakerAlarmListener listener) {
     this.listener = listener;
-    initAlarmWatcher();
     this.id = String.valueOf(System.nanoTime());
     date = LocalDate.now();
     hour = LocalTime.now().getHour();
     minute = LocalTime.now().getMinute();
+    initAlarmWatcher();
   }
 
   public WakerAlarm(WakerAlarmListener listener, String id, File soundFile, LocalDateTime fireDate, boolean enabled) {

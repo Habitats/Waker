@@ -75,7 +75,6 @@ public class Waker extends Application {
       Log.v("Loading previous state complete!");
     } catch (IOException e) {
       Log.v("Loading previous state failed!");
-      e.printStackTrace();
     }
   }
 
