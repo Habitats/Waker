@@ -37,11 +37,10 @@ public class WakerAlarm {
             wakerController.fireAlarm(this);
             enabled = false;
           }
-        } else {
-          try {
-            Thread.sleep(1000);
-          } catch (InterruptedException e) {
-          }
+        }
+        try {
+          Thread.sleep(1000);
+        } catch (InterruptedException e) {
         }
       }
     }).start();
@@ -76,6 +75,7 @@ public class WakerAlarm {
 
   private void update() {
     fireDate = getFireDate();
+    System.out.println("update!");
     if (getDescriptionLabel() != null) {
       Platform.runLater(() -> getDescriptionLabel().setText(toString()));
     }
