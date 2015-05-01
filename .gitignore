@@ -2,8 +2,6 @@
 .metadata/
 .project
 *.db
-bin/
-*.jar
 .settings/
 doc/
 *.ucls
@@ -18,3 +16,8 @@ out
 *.iml
 *.class
 *.log
+
+bin/waker.properties
+bin/bundles
+bin/Waker.html
+bin/Waker.jnlp
