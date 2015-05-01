@@ -1,8 +1,9 @@
 package waker;
 
 import java.io.File;
-import java.net.URISyntaxException;
-import java.util.stream.IntStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -10,15 +11,18 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.effect.InnerShadow;
 import javafx.scene.layout.GridPane;
-import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import waker.controllers.AlarmController;
+import waker.controllers.WakerController;
+import waker.models.WakerAlarm;
 
 public class Waker extends Application {
 
   private WakerController controller;
-  private MediaPlayer player;
-  private File defaultSound;
+  public static File defaultSound;
+  private Stage primaryState;
+  private List<AlarmController> alarms;
 
   public static void main(String[] args) {
     launch(args);
@@ -26,7 +30,9 @@ public class Waker extends Application {
 
   @Override
   public void start(Stage primaryStage) throws Exception {
-    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("waker.fxml"));
+    alarms = new ArrayList<>();
+    this.primaryState = primaryStage;
+    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("gui/waker.fxml"));
     primaryStage.setTitle("Waker");
     GridPane root = fxmlLoader.load();
     controller = fxmlLoader.getController();
@@ -41,15 +47,32 @@ public class Waker extends Application {
     setup();
   }
 
-  private void setup() throws URISyntaxException {
+  private void setup() throws Exception {
     controller.setApplication(this);
     controller.volumeSlider.valueProperty()
         .addListener((observable, oldValue, newValue) -> onVolumeChanged(getVolume()));
     updateTitle(controller, getVolume());
     defaultSound = new File(getClass().getResource("still_blastin.mp3").getFile());
+
+    addAlarm();
   }
 
-  private double getVolume() {
+  public void addAlarm() {
+    try {
+      FXMLLoader alarmFxml = new FXMLLoader(getClass().getResource("gui/alarm.fxml"));
+      GridPane alarmView = alarmFxml.load();
+      AlarmController alarmController = alarmFxml.getController();
+      alarmController.setController(controller);
+      WakerAlarm alarm = new WakerAlarm(alarmController);
+      alarms.add(alarmController);
+      alarmController.setAlarm(alarm);
+      controller.alarmListView.getChildren().add(alarmView);
+      primaryState.sizeToScene();
+    } catch (IOException e) {
+    }
+  }
+
+  public double getVolume() {
     return controller.volumeSlider.getValue() / 100.;
   }
 
@@ -65,33 +88,6 @@ public class Waker extends Application {
 
   public void onVolumeChanged(double volume) {
     updateTitle(controller, volume);
-  }
-
-  public void fireAlarm(WakerAlarm wakerAlarm) {
-    player = new MediaPlayer(wakerAlarm.getSound());
-    player.play();
-    if (controller.increasingVolume) {
-      IntStream.range(0, 100).forEach(i -> {
-        if (wakerAlarm.isEnabled()) {
-          controller.volumeSlider.setValue(i);
-          player.setVolume(i / 100.);
-          try {
-            Thread.sleep(1000);
-          } catch (InterruptedException e) {
-          }
-        }
-      });
-    }
-  }
-
-  public void stopAlarm() {
-    if (player != null) {
-      player.stop();
-      player = null;
-    }
-  }
-
-  public File getDefaultSound() {
-    return defaultSound;
+    alarms.forEach(a -> a.onVolumeChanged(volume));
   }
 }

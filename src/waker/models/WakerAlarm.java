@@ -1,4 +1,4 @@
-package waker;
+package waker.models;
 
 import java.io.File;
 import java.time.LocalDate;
@@ -7,15 +7,15 @@ import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 
 import javafx.application.Platform;
-import javafx.scene.control.Label;
 import javafx.scene.media.Media;
+import waker.Log;
 
 /**
  * Created by mail on 01.05.2015.
  */
 public class WakerAlarm {
 
-  private final WakerController wakerController;
+  private final WakerAlarmListener listener;
   private boolean enabled = false;
   private LocalDate date = LocalDate.now();
   private int minute;
@@ -23,20 +23,18 @@ public class WakerAlarm {
   private LocalDateTime fireDate;
   private File soundFile;
 
-  public WakerAlarm(WakerController wakerController) {
-    this.wakerController = wakerController;
-    initAlarmWatcher(wakerController);
+  public WakerAlarm(WakerAlarmListener listener) {
+    this.listener = listener;
+    initAlarmWatcher();
   }
 
-  private void initAlarmWatcher(WakerController wakerController) {
+  private void initAlarmWatcher() {
     new Thread(() -> {
       while (true) {
         update();
-        if (enabled) {
-          if (LocalDateTime.now().isAfter(fireDate)) {
-            wakerController.fireAlarm(this);
-            enabled = false;
-          }
+        if (shouldFire()) {
+          listener.startAlarm(this);
+          enabled = false;
         }
         try {
           Thread.sleep(1000);
@@ -46,10 +44,14 @@ public class WakerAlarm {
     }).start();
   }
 
+  private boolean shouldFire() {
+    return enabled && LocalDateTime.now().isAfter(fireDate);
+  }
+
   public void setEnabled(final boolean enabled) {
     this.enabled = enabled;
     if (!enabled) {
-      wakerController.stopAlarm();
+      listener.stopAlarm(this);
     }
   }
 
@@ -75,21 +77,16 @@ public class WakerAlarm {
 
   private void update() {
     fireDate = getFireDate();
-    if (getCountdownLabel() != null) {
-      Platform.runLater(() -> getCountdownLabel().setText(getFormattedUntil()));
-    }
+    Log.v("Updating! " + getFormattedUntil());
+    Platform.runLater(() -> listener.setCountdown(getFormattedUntil()));
   }
 
   private String getFormattedFireDate() {
     return String.format("%4d-%2d-%2d:%2d:%2d", //
-                         fireDate.getYear(), fireDate.getMonth().getValue(), fireDate.getDayOfMonth(), fireDate.getHour(),
-                         fireDate.getMinute()).replaceAll(" ", "0");
+                         fireDate.getYear(), fireDate.getMonth().getValue(), fireDate.getDayOfMonth(),
+                         fireDate.getHour(), fireDate.getMinute()).replaceAll(" ", "0");
   }
 
-
-  private Label getCountdownLabel() {
-    return wakerController.countdownLabel;
-  }
 
   private LocalDateTime getFireDate() {
     return LocalDateTime.of(date, LocalTime.of(hour, minute));

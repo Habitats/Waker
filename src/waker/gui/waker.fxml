@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<GridPane alignment="center" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="waker.controllers.WakerController">
+    <children>
+      <GridPane>
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <Label fx:id="titleLabel" maxWidth="1.7976931348623157E308" prefHeight="70.0" style="-fx-font-weight: 900;" text="Waker" textFill="#f8f8f8" GridPane.hgrow="ALWAYS">
+               <font>
+                  <Font name="System Bold" size="45.0" />
+               </font>
+            </Label>
+
+                  <Button fx:id="addAlarmButton" alignment="BASELINE_RIGHT" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onAddAlarmClicked" prefHeight="25.0" prefWidth="25.0" text="+" GridPane.columnIndex="3" HBox.hgrow="NEVER">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <CheckBox fx:id="increasingCheckbox" alignment="CENTER" mnemonicParsing="false" onAction="#onIncreasing" text="Increasing" GridPane.columnIndex="1" />
+            <Slider fx:id="volumeSlider" value="10.0" GridPane.columnIndex="2" />
+         </children>
+      </GridPane>
+      <VBox fx:id="alarmListView" GridPane.rowIndex="1" />
+    </children>
+    <columnConstraints>
+        <ColumnConstraints prefWidth="500.0" />
+        <ColumnConstraints />
+        <ColumnConstraints />
+        <ColumnConstraints />
+        <ColumnConstraints />
+        <ColumnConstraints maxWidth="0.0" minWidth="0.0" prefWidth="0.0" />
+        <ColumnConstraints maxWidth="0.0" minWidth="0.0" prefWidth="0.0" />
+    </columnConstraints>
+    <rowConstraints>
+      <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+      <RowConstraints />
+        <RowConstraints maxHeight="50.0" minHeight="0.0" prefHeight="0.0" />
+        <RowConstraints maxHeight="50.0" minHeight="0.0" prefHeight="0.0" />
+        <RowConstraints maxHeight="50.0" minHeight="0.0" prefHeight="0.0" />
+        <RowConstraints maxHeight="25.0" minHeight="0.0" prefHeight="0.0" />
+        <RowConstraints maxHeight="25.0" minHeight="0.0" prefHeight="0.0" />
+        <RowConstraints maxHeight="25.0" minHeight="0.0" prefHeight="0.0" />
+      <RowConstraints minHeight="0.0" prefHeight="0.0" />
+
+
+    </rowConstraints>
+    <padding>
+        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+    </padding>
+</GridPane>
