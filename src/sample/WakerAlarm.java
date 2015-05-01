@@ -75,15 +75,27 @@ public class WakerAlarm {
 
   private void update() {
     fireDate = getFireDate();
-    System.out.println("update!");
+    if (getCountdownLabel() != null) {
+      Platform.runLater(() -> getCountdownLabel().setText(getFormattedUntil()));
+    }
     if (getDescriptionLabel() != null) {
-      Platform.runLater(() -> getDescriptionLabel().setText(toString()));
+      Platform.runLater(() -> getDescriptionLabel().setText(getFormattedFireDate()));
     }
 //    System.out.println(String.format("New time: %s", fireDate.toString()));
   }
 
+  private String getFormattedFireDate() {
+    return String.format("%4d-%2d-%2d:%2d:%2d", //
+                         fireDate.getYear(), fireDate.getMonth().getValue(), fireDate.getDayOfMonth(), fireDate.getHour(),
+                         fireDate.getMinute()).replaceAll(" ", "0");
+  }
+
   private Label getDescriptionLabel() {
     return wakerController.alarmDescriptionLabel;
+  }
+
+  private Label getCountdownLabel() {
+    return wakerController.countdownLabel;
   }
 
   private LocalDateTime getFireDate() {
@@ -99,13 +111,52 @@ public class WakerAlarm {
     return new Media(soundFile.toURI().toString());
   }
 
-  @Override
-  public String toString() {
-    return String.format("%s - %s - %s", LocalDateTime.now().until(getFireDate(), ChronoUnit.SECONDS), getFireDate(),
-                         getSoundFileName());
+  private String getFormattedUntil() {
+    LocalDateTime fromDateTime = LocalDateTime.now();
+    LocalDateTime toDateTime = getFireDate();
+    if (fromDateTime.until(toDateTime, ChronoUnit.SECONDS) < 0) {
+      return String.format("Went off %s ago!", getFormattedDifference(toDateTime, fromDateTime));
+    } else {
+      return String.format("Going off in %s", getFormattedDifference(fromDateTime, toDateTime));
+    }
+  }
+
+  private String getFormattedDifference(LocalDateTime fromDateTime, LocalDateTime toDateTime) {
+    LocalDateTime tempDateTime = LocalDateTime.from(fromDateTime);
+
+    long years = tempDateTime.until(toDateTime, ChronoUnit.YEARS);
+    tempDateTime = tempDateTime.plusYears(years);
+
+    long months = tempDateTime.until(toDateTime, ChronoUnit.MONTHS);
+    tempDateTime = tempDateTime.plusMonths(months);
+
+    long days = tempDateTime.until(toDateTime, ChronoUnit.DAYS);
+    tempDateTime = tempDateTime.plusDays(days);
+
+    long hours = tempDateTime.until(toDateTime, ChronoUnit.HOURS);
+    tempDateTime = tempDateTime.plusHours(hours);
+
+    long minutes = tempDateTime.until(toDateTime, ChronoUnit.MINUTES);
+    tempDateTime = tempDateTime.plusMinutes(minutes);
+
+    long seconds = tempDateTime.until(toDateTime, ChronoUnit.SECONDS);
+
+    String formatted = String.format("%s%s%s%s%s%s",  //
+                                     years > 0 ? years + " y " : "",  //
+                                     months > 0 ? months + " m " : "", //
+                                     days > 0 ? days + " d " : "", //
+                                     hours > 0 ? hours + " h " : "", //
+                                     minutes > 0 ? minutes + " m " : "", //
+                                     seconds > 0 ? seconds + " s " : "");
+    return formatted;
   }
 
   private String getSoundFileName() {
     return soundFile == null ? "No sound! " : soundFile.getName();
+  }
+
+  @Override
+  public String toString() {
+    return String.format("%s - %s - %s", getFormattedUntil(), getFireDate(), getSoundFileName());
   }
 }

@@ -25,6 +25,7 @@ public class WakerController {
   public Label soundLabel;
   public Slider volumeSlider;
   public CheckBox increasingCheckbox;
+  public Label countdownLabel;
   private WakerAlarm alarm = new WakerAlarm(this);
   private MediaPlayer player;
   private boolean increasingVolume;
@@ -39,7 +40,6 @@ public class WakerController {
   }
 
   public void onDateSelected(ActionEvent actionEvent) {
-    alarmDescriptionLabel.setText(datePicker.getValue().toString());
     alarm.setDate(datePicker.getValue());
   }
 
