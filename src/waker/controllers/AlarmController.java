@@ -8,9 +8,12 @@ import java.util.stream.IntStream;
 
 import javafx.event.ActionEvent;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.layout.GridPane;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.FileChooser;
 import waker.Log;
@@ -27,6 +30,7 @@ public class AlarmController implements WakerAlarmListener {
   public Label countdownLabel;
   public ComboBox<String> hoursCombobox;
   public ComboBox<String> minutesCombobox;
+  public GridPane alarmView;
   private WakerAlarm alarm;
   public ToggleButton alarmToggle;
   public DatePicker datePicker;
@@ -59,9 +63,27 @@ public class AlarmController implements WakerAlarmListener {
     minutesCombobox.setValue(String.valueOf(LocalTime.now().getMinute()));
     datePicker.setValue(LocalDate.now());
 
-    updateSettings(null);
-    onMinutesChanged(null);
+    initContextMenu();
+
     onHoursChanged(null);
+    onMinutesChanged(null);
+    updateSettings(null);
+  }
+
+  private void initContextMenu() {
+    final ContextMenu contextMenu = new ContextMenu();
+    MenuItem delete = new MenuItem("Delete");
+    contextMenu.getItems().addAll(delete);
+    delete.setOnAction(event -> {
+      alarm.setEnabled(false);
+      controller.remove(alarmView);
+    });
+
+    alarmView.setOnMousePressed(event -> {
+      if (event.isSecondaryButtonDown()) {
+        contextMenu.show(alarmView, event.getScreenX(), event.getScreenY());
+      }
+    });
   }
 
   @Override
@@ -69,7 +91,12 @@ public class AlarmController implements WakerAlarmListener {
     if (player != null) {
       player.stop();
     }
-    player = new MediaPlayer(wakerAlarm.getSound());
+    try {
+      player = new MediaPlayer(wakerAlarm.getSound());
+    } catch (Exception e) {
+      Log.v("Failed to play sound!");
+      return;
+    }
     player.play();
     if (controller.increasingVolume) {
       IntStream.range(0, 100).forEach(i -> {

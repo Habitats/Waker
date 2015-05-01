@@ -20,7 +20,7 @@ public class Waker extends Application {
 
   private WakerController controller;
   public static File defaultSound;
-  private Stage primaryState;
+  private Stage primaryStage;
   private List<AlarmController> alarms;
 
   public static void main(String[] args) {
@@ -30,7 +30,7 @@ public class Waker extends Application {
   @Override
   public void start(Stage primaryStage) throws Exception {
     alarms = new ArrayList<>();
-    this.primaryState = primaryStage;
+    this.primaryStage = primaryStage;
     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("gui/waker.fxml"));
     primaryStage.setTitle("Waker");
     GridPane root = fxmlLoader.load();
@@ -64,7 +64,7 @@ public class Waker extends Application {
       alarmController.setController(controller);
       alarms.add(alarmController);
       controller.alarmListView.getChildren().add(alarmView);
-      primaryState.sizeToScene();
+      primaryStage.sizeToScene();
     } catch (IOException e) {
     }
   }
@@ -86,5 +86,10 @@ public class Waker extends Application {
   public void onVolumeChanged(double volume) {
     updateTitle(controller, volume);
     alarms.forEach(a -> a.onVolumeChanged(volume));
+  }
+
+  public void remove(GridPane alarmView) {
+    controller.alarmListView.getChildren().remove(alarmView);
+    primaryStage.sizeToScene();
   }
 }
