@@ -4,11 +4,14 @@ import java.io.File;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
+import java.util.Properties;
 
 import javafx.application.Platform;
 import javafx.scene.media.Media;
 import waker.Log;
+import waker.controllers.AlarmController;
 
 /**
  * Created by mail on 01.05.2015.
@@ -16,8 +19,13 @@ import waker.Log;
 public class WakerAlarm {
 
   private final WakerAlarmListener listener;
+  private static final String ENABLED = "enabled";
+  private static final String FIRE_DATE = "fire_date";
+  private static final String SOUND_PATH = "sound_path";
+  public static final String ID = "id_";
+  private String id;
   private boolean enabled = false;
-  private LocalDate date = LocalDate.now();
+  private LocalDate date;
   private int minute;
   private int hour;
   private LocalDateTime fireDate;
@@ -26,7 +34,23 @@ public class WakerAlarm {
   public WakerAlarm(WakerAlarmListener listener) {
     this.listener = listener;
     initAlarmWatcher();
+    this.id = String.valueOf(System.nanoTime());
+    date = LocalDate.now();
+    hour = LocalTime.now().getHour();
+    minute = LocalTime.now().getMinute();
   }
+
+  public WakerAlarm(WakerAlarmListener listener, String id, File soundFile, LocalDateTime fireDate, boolean enabled) {
+    this.listener = listener;
+    this.id = id;
+    this.soundFile = soundFile;
+    this.date = fireDate.toLocalDate();
+    this.minute = fireDate.getMinute();
+    this.hour = fireDate.getHour();
+    this.enabled = enabled;
+    initAlarmWatcher();
+  }
+
 
   private void initAlarmWatcher() {
     new Thread(() -> {
@@ -78,7 +102,7 @@ public class WakerAlarm {
 
   private void update() {
     fireDate = getFireDate();
-    Log.v("Updating! " + getFormattedUntil());
+//    Log.v("Updating! " + getFormattedUntil());
     Platform.runLater(() -> listener.setCountdown(getFormattedUntil()));
   }
 
@@ -149,5 +173,47 @@ public class WakerAlarm {
   @Override
   public String toString() {
     return String.format("%s - %s - %s", getFormattedUntil(), getFireDate(), getSoundFileName());
+  }
+
+  public String getId() {
+    return id;
+  }
+
+  public Properties getProperties() {
+    Properties props = new Properties();
+
+    return props;
+  }
+
+  public static WakerAlarm fromProperties(String id, Properties props, AlarmController alarmController) {
+    String propSoundPath = props.getProperty(SOUND_PATH + id);
+    String propFireDate = props.getProperty(FIRE_DATE + id);
+    String propEnabled = props.getProperty(ENABLED + id);
+
+    File soundFile = new File(propSoundPath);
+    long epochSecond = Long.parseLong(propFireDate);
+    LocalDateTime fireDate = LocalDateTime.ofEpochSecond(epochSecond, 0, ZoneOffset.UTC);
+    boolean enabled = Boolean.parseBoolean(propEnabled);
+
+    return new WakerAlarm(alarmController, id, soundFile, fireDate, enabled);
+  }
+
+  public void saveState(Properties props) {
+    props.setProperty(ID + id, id);
+    props.setProperty(SOUND_PATH + id, soundFile != null ? soundFile.getAbsolutePath() : "");
+    props.setProperty(FIRE_DATE + id, String.valueOf(fireDate.toEpochSecond(ZoneOffset.UTC)));
+    props.setProperty(ENABLED + id, String.valueOf(enabled));
+  }
+
+  public int getHours() {
+    return hour;
+  }
+
+  public int getMinutes() {
+    return minute;
+  }
+
+  public LocalDate getDate() {
+    return date;
   }
 }

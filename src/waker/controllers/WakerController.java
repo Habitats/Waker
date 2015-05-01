@@ -34,7 +34,7 @@ public class WakerController {
     return application.getVolume();
   }
 
-  public void remove(GridPane alarmView) {
-   application.remove(alarmView);
+  public void remove(AlarmController alarmController, GridPane alarmView) {
+   application.remove(alarmController, alarmView);
   }
 }

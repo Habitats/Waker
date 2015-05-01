@@ -1,8 +1,7 @@
 package waker.controllers;
 
 import java.io.File;
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.util.Properties;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -56,13 +55,20 @@ public class AlarmController implements WakerAlarmListener {
 
   public void setController(WakerController controller) {
     this.controller = controller;
-    alarm = new WakerAlarm(this);
+  }
+
+  public void setAlarm() {
+    setAlarm(new WakerAlarm(this));
+  }
+
+  public void setAlarm(WakerAlarm alarm) {
+    this.alarm = alarm;
     hoursCombobox.getItems().addAll(IntStream.range(0, 24).mapToObj(String::valueOf).collect(Collectors.toList()));
     minutesCombobox.getItems().addAll(IntStream.range(0, 60).mapToObj(String::valueOf).collect(Collectors.toList()));
-    hoursCombobox.setValue(String.valueOf(LocalTime.now().getHour()));
-    minutesCombobox.setValue(String.valueOf(LocalTime.now().getMinute()));
-    datePicker.setValue(LocalDate.now());
 
+    hoursCombobox.setValue(String.valueOf(alarm.getHours()));
+    minutesCombobox.setValue(String.valueOf(alarm.getMinutes()));
+    datePicker.setValue(alarm.getDate());
     initContextMenu();
 
     onHoursChanged(null);
@@ -76,7 +82,7 @@ public class AlarmController implements WakerAlarmListener {
     contextMenu.getItems().addAll(delete);
     delete.setOnAction(event -> {
       alarm.setEnabled(false);
-      controller.remove(alarmView);
+      controller.remove(this, alarmView);
     });
 
     alarmView.setOnMousePressed(event -> {
@@ -135,6 +141,9 @@ public class AlarmController implements WakerAlarmListener {
   }
 
   public void updateSettings(ActionEvent actionEvent) {
+    if (alarm == null) {
+      return;
+    }
     alarm.setDate(datePicker.getValue());
     alarmToggle.setText(alarmToggle.isSelected() ? "On" : "Off");
     alarm.setEnabled(alarmToggle.isSelected());
@@ -163,5 +172,17 @@ public class AlarmController implements WakerAlarmListener {
     } catch (Exception e) {
       Log.v("Invalid value!");
     }
+  }
+
+  public String getId() {
+    return alarm.getId();
+  }
+
+  public Properties getProperties() {
+    return alarm.getProperties();
+  }
+
+  public void saveState(Properties props) {
+    alarm.saveState(props);
   }
 }
