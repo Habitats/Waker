@@ -19,11 +19,12 @@
 
 <GridPane alignment="TOP_RIGHT" maxHeight="1.7976931348623157E308" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="waker.controllers.WakerController">
     <children>
-      <GridPane GridPane.valignment="TOP">
+      <GridPane hgap="10.0" GridPane.valignment="TOP">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+            <ColumnConstraints hgrow="SOMETIMES" />
+            <ColumnConstraints hgrow="SOMETIMES" />
+            <ColumnConstraints hgrow="SOMETIMES" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
          </columnConstraints>
          <rowConstraints>
@@ -36,19 +37,20 @@
                </font>
             </Label>
 
-                  <Button fx:id="addAlarmButton" alignment="BASELINE_RIGHT" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onAddAlarmClicked" prefHeight="25.0" prefWidth="25.0" text="+" GridPane.columnIndex="3" HBox.hgrow="NEVER">
+                  <Button fx:id="addAlarmButton" alignment="BASELINE_RIGHT" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onAddAlarmClicked" prefHeight="25.0" prefWidth="25.0" text="+" GridPane.columnIndex="4" HBox.hgrow="NEVER">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <CheckBox fx:id="increasingCheckbox" alignment="CENTER" mnemonicParsing="false" onAction="#onIncreasing" text="Increasing" GridPane.columnIndex="1" />
-            <Slider fx:id="volumeSlider" value="10.0" GridPane.columnIndex="2" />
+            <CheckBox fx:id="increasingCheckbox" alignment="CENTER" mnemonicParsing="false" text="Increasing" GridPane.columnIndex="2" />
+            <Slider fx:id="volumeSlider" value="10.0" GridPane.columnIndex="3" />
+            <CheckBox fx:id="repeatCheckbox" alignment="CENTER" mnemonicParsing="false" text="Repeat" GridPane.columnIndex="1" />
          </children>
       </GridPane>
       <VBox fx:id="alarmListView" maxWidth="1.7976931348623157E308" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
     </children>
     <columnConstraints>
-        <ColumnConstraints maxWidth="1.7976931348623157E308" prefWidth="500.0" />
+        <ColumnConstraints maxWidth="1.7976931348623157E308" prefWidth="550.0" />
         <ColumnConstraints />
         <ColumnConstraints />
         <ColumnConstraints />

@@ -99,12 +99,13 @@ public class AlarmController implements WakerAlarmListener {
     }
     try {
       player = new MediaPlayer(wakerAlarm.getSound());
+      player.setCycleCount(controller.shouldRepat() ? 100 : 0);
     } catch (Exception e) {
       Log.v("Failed to play sound!");
       return;
     }
     player.play();
-    if (controller.increasingVolume) {
+    if (controller.isIncreasingVolume()) {
       IntStream.range(0, 100).forEach(i -> {
         if (wakerAlarm.isEnabled()) {
           controller.volumeSlider.setValue(i);

@@ -13,14 +13,10 @@ public class WakerController {
 
   public Slider volumeSlider;
   public CheckBox increasingCheckbox;
+  public CheckBox repeatCheckbox;
   public Label titleLabel;
   public VBox alarmListView;
-  public boolean increasingVolume;
   private Waker application;
-
-  public void onIncreasing(ActionEvent actionEvent) {
-    increasingVolume = increasingCheckbox.isSelected();
-  }
 
   public void setApplication(Waker application) {
     this.application = application;
@@ -35,6 +31,14 @@ public class WakerController {
   }
 
   public void remove(AlarmController alarmController, GridPane alarmView) {
-   application.remove(alarmController, alarmView);
+    application.remove(alarmController, alarmView);
+  }
+
+  public boolean isIncreasingVolume() {
+    return increasingCheckbox.isSelected();
+  }
+
+  public boolean shouldRepat() {
+    return repeatCheckbox.isSelected();
   }
 }
