@@ -196,7 +196,6 @@ public class WakerAlarm {
     props.setProperty(SOUND_PATH + id, soundFile != null ? soundFile.getAbsolutePath() : "null");
     props.setProperty(FIRE_DATE + id, String.valueOf(fireDate.toEpochSecond(ZoneOffset.UTC)));
     props.setProperty(ENABLED + id, String.valueOf(enabled));
-    Log.v(enabled);
   }
 
   public int getHours() {
