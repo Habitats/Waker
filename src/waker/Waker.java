@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Properties;
 
@@ -69,8 +70,10 @@ public class Waker extends Application {
       props.load(in);
       in.close();
       props.keySet().stream() //
+          .map(String::valueOf)
           .filter(k -> k.toString().startsWith(WakerAlarm.ID))//
-          .forEach(id -> addAlarm(props.getProperty(id.toString()), props));
+          .sorted(Comparator.<String>naturalOrder()) //
+          .forEach(id -> addAlarm(props.getProperty(id), props));
       primaryStage.sizeToScene();
       Log.v("Loading previous state complete!");
     } catch (IOException e) {
