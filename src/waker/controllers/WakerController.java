@@ -27,7 +27,7 @@ public class WakerController {
   }
 
   public double getVolume() {
-    return application.getVolume();
+    return volumeSlider.getValue() / 100.;
   }
 
   public void remove(AlarmController alarmController, GridPane alarmView) {
@@ -40,5 +40,17 @@ public class WakerController {
 
   public boolean shouldRepat() {
     return repeatCheckbox.isSelected();
+  }
+
+  public void setShouldIncrease(boolean increase) {
+    increasingCheckbox.setSelected(increase);
+  }
+
+  public void setRepeat(boolean repeat) {
+    repeatCheckbox.setSelected(repeat);
+  }
+
+  public void setVolume(double volume) {
+    volumeSlider.setValue(volume * 100.);
   }
 }

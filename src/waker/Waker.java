@@ -23,6 +23,9 @@ import waker.models.WakerAlarm;
 
 public class Waker extends Application {
 
+  private static final String VOLUME = "volume";
+  private static final String INCREASING = "increasing_volume";
+  private static final String REPEAT = "repeat_song";
   private WakerController controller;
   public static File defaultSound;
   private Stage primaryStage;
@@ -57,8 +60,8 @@ public class Waker extends Application {
   private void setup() throws Exception {
     controller.setApplication(this);
     controller.volumeSlider.valueProperty()
-        .addListener((observable, oldValue, newValue) -> onVolumeChanged(getVolume()));
-    updateTitle(controller, getVolume());
+        .addListener((observable, oldValue, newValue) -> onVolumeChanged(controller.getVolume()));
+    updateTitle(controller, controller.getVolume());
     defaultSound = new File(getClass().getResource("still_blastin.mp3").getFile());
   }
 
@@ -69,14 +72,23 @@ public class Waker extends Application {
       FileInputStream in = new FileInputStream("waker.properties");
       props.load(in);
       in.close();
+
       props.keySet().stream() //
-          .map(String::valueOf)
-          .filter(k -> k.toString().startsWith(WakerAlarm.ID))//
+          .map(String::valueOf).filter(k -> k.toString().startsWith(WakerAlarm.ID))//
           .sorted(Comparator.<String>naturalOrder()) //
           .forEach(id -> addAlarm(props.getProperty(id), props));
+
       primaryStage.sizeToScene();
+
+      double volume = Double.parseDouble(props.getProperty(VOLUME));
+      boolean repeat = Boolean.parseBoolean(props.getProperty(REPEAT));
+      boolean increase = Boolean.parseBoolean(props.getProperty(INCREASING));
+      controller.setVolume(volume);
+      controller.setRepeat(repeat);
+      controller.setShouldIncrease(increase);
+
       Log.v("Loading previous state complete!");
-    } catch (IOException e) {
+    } catch (Exception e) {
       Log.v("Loading previous state failed!");
     }
   }
@@ -86,6 +98,9 @@ public class Waker extends Application {
       Log.v("Saving state ...");
       Properties props = new Properties();
       alarms.forEach(a -> a.saveState(props));
+      props.setProperty(REPEAT, String.valueOf(controller.shouldRepat()));
+      props.setProperty(INCREASING, String.valueOf(controller.isIncreasingVolume()));
+      props.setProperty(VOLUME, String.valueOf(controller.getVolume()));
       props.store(new FileOutputStream("waker.properties"), null);
     } catch (Exception e) {
       Log.v("Saving state failed!");
@@ -118,10 +133,6 @@ public class Waker extends Application {
     } catch (IOException e) {
       throw new IllegalStateException("Unable to create controller!");
     }
-  }
-
-  public double getVolume() {
-    return controller.volumeSlider.getValue() / 100.;
   }
 
   private void updateTitle(WakerController controller, double choke) {
