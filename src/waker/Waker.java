@@ -15,7 +15,6 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import waker.controllers.AlarmController;
 import waker.controllers.WakerController;
-import waker.models.WakerAlarm;
 
 public class Waker extends Application {
 
@@ -63,9 +62,7 @@ public class Waker extends Application {
       GridPane alarmView = alarmFxml.load();
       AlarmController alarmController = alarmFxml.getController();
       alarmController.setController(controller);
-      WakerAlarm alarm = new WakerAlarm(alarmController);
       alarms.add(alarmController);
-      alarmController.setAlarm(alarm);
       controller.alarmListView.getChildren().add(alarmView);
       primaryState.sizeToScene();
     } catch (IOException e) {

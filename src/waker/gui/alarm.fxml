@@ -16,10 +16,8 @@
 
 <GridPane hgap="10.0" vgap="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="waker.controllers.AlarmController">
     <children>
-        <DatePicker fx:id="datePicker" maxWidth="1.7976931348623157E308" onAction="#onDateSelected" prefHeight="25.0" prefWidth="127.0" GridPane.columnIndex="4" />
-        <ToggleButton fx:id="alarmToggle" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onToggle" prefHeight="25.0" prefWidth="90.0" text="Off" GridPane.hgrow="NEVER" GridPane.rowSpan="2" GridPane.vgrow="ALWAYS" />
-        <TextField fx:id="hourInput" onKeyReleased="#onHourChanged" promptText="hours" text="0" GridPane.columnIndex="2" GridPane.hgrow="NEVER" />
-        <TextField fx:id="minuteInput" onKeyReleased="#onMinuteChanged" promptText="minutes" text="0" GridPane.columnIndex="3" GridPane.hgrow="NEVER" />
+        <DatePicker fx:id="datePicker" maxWidth="1.7976931348623157E308" onAction="#updateSettings" prefHeight="25.0" prefWidth="127.0" GridPane.columnIndex="4" />
+        <ToggleButton fx:id="alarmToggle" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#updateSettings" prefHeight="25.0" prefWidth="90.0" text="Off" GridPane.hgrow="NEVER" GridPane.rowSpan="2" GridPane.vgrow="ALWAYS" />
         <Label fx:id="countdownLabel" text="FIRE DATE + TIME" GridPane.columnIndex="1" />
       <Label fx:id="soundLabel" text="No sound loaded!" GridPane.columnIndex="1" GridPane.rowIndex="1" HBox.hgrow="ALWAYS">
          <HBox.margin>
@@ -28,20 +26,22 @@
       </Label>
       <HBox GridPane.columnIndex="2" GridPane.columnSpan="2147483647" GridPane.rowIndex="1">
          <children>
-                <Button fx:id="loadSoundButton" maxWidth="1.7976931348623157E308" onAction="#onLoad" prefWidth="100.0" text="Load Sound" GridPane.columnIndex="3" GridPane.rowIndex="1" HBox.hgrow="NEVER">
+                <Button fx:id="loadSoundButton" maxWidth="1.7976931348623157E308" onAction="#onLoad" prefWidth="100.0" text="Load Sound" GridPane.columnIndex="3" GridPane.rowIndex="1" HBox.hgrow="SOMETIMES">
                <HBox.margin>
                   <Insets right="10.0" />
                </HBox.margin>
             </Button>
-                <Button fx:id="loadDefaultSoundButton" maxWidth="1.7976931348623157E308" onAction="#onLoadDefaultSound" prefWidth="100.0" text="Default Sound" HBox.hgrow="NEVER" />
+                <Button fx:id="loadDefaultSoundButton" maxWidth="1.7976931348623157E308" onAction="#onLoadDefaultSound" prefWidth="100.0" text="Default Sound" HBox.hgrow="SOMETIMES" />
          </children>
       </HBox>
+      <ComboBox fx:id="hoursCombobox" editable="true" onAction="#onHoursChanged" onKeyPressed="#onHoursChanged" prefWidth="150.0" visibleRowCount="10" GridPane.columnIndex="2" />
+      <ComboBox fx:id="minutesCombobox" editable="true" onAction="#onMinutesChanged" onKeyPressed="#onMinutesChanged" prefWidth="150.0" GridPane.columnIndex="3" />
     </children>
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" />
-        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="200.0" />
-        <ColumnConstraints hgrow="NEVER" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />
-        <ColumnConstraints hgrow="NEVER" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />
+        <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" prefWidth="200.0" />
+        <ColumnConstraints hgrow="NEVER" maxWidth="55.0" minWidth="-Infinity" />
+        <ColumnConstraints hgrow="NEVER" maxWidth="55.0" minWidth="-Infinity" />
         <ColumnConstraints hgrow="NEVER" maxWidth="130.0" minWidth="130.0" prefWidth="130.0" />
     </columnConstraints>
     <rowConstraints>

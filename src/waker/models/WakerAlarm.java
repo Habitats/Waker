@@ -39,6 +39,7 @@ public class WakerAlarm {
         try {
           Thread.sleep(1000);
         } catch (InterruptedException e) {
+          Log.v(e);
         }
       }
     }).start();

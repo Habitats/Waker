@@ -17,9 +17,9 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane alignment="center" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="waker.controllers.WakerController">
+<GridPane alignment="TOP_RIGHT" maxHeight="1.7976931348623157E308" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="waker.controllers.WakerController">
     <children>
-      <GridPane>
+      <GridPane GridPane.valignment="TOP">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
@@ -45,10 +45,10 @@
             <Slider fx:id="volumeSlider" value="10.0" GridPane.columnIndex="2" />
          </children>
       </GridPane>
-      <VBox fx:id="alarmListView" GridPane.rowIndex="1" />
+      <VBox fx:id="alarmListView" maxWidth="1.7976931348623157E308" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
     </children>
     <columnConstraints>
-        <ColumnConstraints prefWidth="500.0" />
+        <ColumnConstraints maxWidth="1.7976931348623157E308" prefWidth="500.0" />
         <ColumnConstraints />
         <ColumnConstraints />
         <ColumnConstraints />
