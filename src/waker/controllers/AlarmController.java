@@ -16,7 +16,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.FileChooser;
 import waker.Log;
-import waker.Waker;
 import waker.models.WakerAlarm;
 import waker.models.WakerAlarmListener;
 
@@ -47,11 +46,11 @@ public class AlarmController implements WakerAlarmListener {
     }
   }
 
-  public void onLoadDefaultSound(ActionEvent actionEvent) {
-    File defaultSound = Waker.defaultSound;
-    soundLabel.setText(defaultSound.getName());
-    alarm.setSound(defaultSound);
-  }
+//  public void onLoadDefaultSound(ActionEvent actionEvent) {
+//    File defaultSound = Waker.defaultSound;
+//    soundLabel.setText(defaultSound.getName());
+//    alarm.setSound(defaultSound);
+//  }
 
   public void setController(WakerController controller) {
     this.controller = controller;

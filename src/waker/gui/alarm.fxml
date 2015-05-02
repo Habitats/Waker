@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.shape.*?>
 <?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
@@ -27,12 +28,15 @@
         </Label>
         <HBox GridPane.columnIndex="2" GridPane.columnSpan="2147483647" GridPane.rowIndex="1">
             <children>
+                <Button fx:id="loadDefaultSoundButton" maxWidth="-Infinity" prefWidth="130.0" text="Default Sound" visible="false" HBox.hgrow="SOMETIMES">
+               <HBox.margin>
+                  <Insets right="10.0" />
+               </HBox.margin></Button>
                 <Button fx:id="loadSoundButton" maxWidth="-Infinity" onAction="#onLoad" prefWidth="130.0" text="Load Sound" GridPane.columnIndex="3" GridPane.rowIndex="1" HBox.hgrow="SOMETIMES">
                     <HBox.margin>
-                        <Insets right="10.0" />
+                        <Insets />
                     </HBox.margin>
                 </Button>
-                <Button fx:id="loadDefaultSoundButton" maxWidth="-Infinity" onAction="#onLoadDefaultSound" prefWidth="130.0" text="Default Sound" HBox.hgrow="SOMETIMES" />
             </children>
         </HBox>
         <ComboBox fx:id="hoursCombobox" editable="true" onAction="#onHoursChanged" onKeyPressed="#onHoursChanged" prefWidth="60.0" visibleRowCount="10" GridPane.columnIndex="2" />

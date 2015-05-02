@@ -1,6 +1,5 @@
 package waker;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -27,7 +26,7 @@ public class Waker extends Application {
   private static final String INCREASING = "increasing_volume";
   private static final String REPEAT = "repeat_song";
   private WakerController controller;
-  public static File defaultSound;
+//  public static File defaultSound;
   private Stage primaryStage;
   private List<AlarmController> alarms;
 
@@ -62,7 +61,7 @@ public class Waker extends Application {
     controller.volumeSlider.valueProperty()
         .addListener((observable, oldValue, newValue) -> onVolumeChanged(controller.getVolume()));
     updateTitle(controller, controller.getVolume());
-    defaultSound = new File(getClass().getResource("still_blastin.mp3").getFile());
+//    defaultSound = new File(getClass().getResource("still_blastin.mp3").getFile());
   }
 
   private void loadState() {
