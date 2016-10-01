@@ -19,21 +19,18 @@ import waker.Log;
 import waker.models.WakerAlarm;
 import waker.models.WakerAlarmListener;
 
-/**
- * Created by mail on 01.05.2015.
- */
 public class AlarmController implements WakerAlarmListener {
 
-  public Label soundLabel;
-  public Label countdownLabel;
-  public ComboBox<String> hoursCombobox;
-  public ComboBox<String> minutesCombobox;
-  public GridPane alarmView;
-  private WakerAlarm alarm;
-  public ToggleButton alarmToggle;
-  public DatePicker datePicker;
-  private MediaPlayer player;
-  private WakerController controller;
+  public  Label            soundLabel;
+  public  Label            countdownLabel;
+  public  ComboBox<String> hoursCombobox;
+  public  ComboBox<String> minutesCombobox;
+  public  GridPane         alarmView;
+  private WakerAlarm       alarm;
+  public  ToggleButton     alarmToggle;
+  public  DatePicker       datePicker;
+  private MediaPlayer      player;
+  private WakerController  controller;
 
   public void onLoad(ActionEvent actionEvent) {
     FileChooser fileChooser = new FileChooser();
@@ -77,7 +74,7 @@ public class AlarmController implements WakerAlarmListener {
 
   private void initContextMenu() {
     final ContextMenu contextMenu = new ContextMenu();
-    MenuItem delete = new MenuItem("Delete");
+    MenuItem          delete      = new MenuItem("Delete");
     contextMenu.getItems().addAll(delete);
     delete.setOnAction(event -> {
       alarm.setEnabled(false);

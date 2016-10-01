@@ -10,12 +10,12 @@ import waker.Waker;
 
 public class WakerController {
 
-  public Slider volumeSlider;
-  public CheckBox increasingCheckbox;
-  public CheckBox repeatCheckbox;
-  public Label titleLabel;
-  public VBox alarmListView;
-  private Waker application;
+  public  Slider   volumeSlider;
+  public  CheckBox increasingCheckbox;
+  public  CheckBox repeatCheckbox;
+  public  Label    titleLabel;
+  public  VBox     alarmListView;
+  private Waker    application;
 
   public void setApplication(Waker application) {
     this.application = application;

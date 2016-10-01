@@ -13,23 +13,20 @@ import javafx.scene.media.Media;
 import waker.Log;
 import waker.controllers.AlarmController;
 
-/**
- * Created by mail on 01.05.2015.
- */
 public class WakerAlarm {
 
   private final WakerAlarmListener listener;
-  private static final String ENABLED = "enabled";
-  private static final String FIRE_DATE = "fire_date";
+  private static final String ENABLED    = "enabled";
+  private static final String FIRE_DATE  = "fire_date";
   private static final String SOUND_PATH = "sound_path";
-  public static final String ID = "id_";
+  public static final  String ID         = "id_";
   private String id;
   private boolean enabled = false;
-  private LocalDate date;
-  private int minute;
-  private int hour;
+  private LocalDate     date;
+  private int           minute;
+  private int           hour;
   private LocalDateTime fireDate;
-  private File soundFile;
+  private File          soundFile;
 
   public WakerAlarm(WakerAlarmListener listener) {
     this.listener = listener;
@@ -50,7 +47,6 @@ public class WakerAlarm {
     this.enabled = enabled;
     initAlarmWatcher();
   }
-
 
   private void initAlarmWatcher() {
     new Thread(() -> {
@@ -94,7 +90,6 @@ public class WakerAlarm {
     update();
   }
 
-
   public void setHour(int hour) {
     this.hour = hour;
     update();
@@ -108,10 +103,8 @@ public class WakerAlarm {
 
   private String getFormattedFireDate() {
     return String.format("%4d-%2d-%2d:%2d:%2d", //
-                         fireDate.getYear(), fireDate.getMonth().getValue(), fireDate.getDayOfMonth(),
-                         fireDate.getHour(), fireDate.getMinute()).replaceAll(" ", "0");
+                         fireDate.getYear(), fireDate.getMonth().getValue(), fireDate.getDayOfMonth(), fireDate.getHour(), fireDate.getMinute()).replaceAll(" ", "0");
   }
-
 
   private LocalDateTime getFireDate() {
     return LocalDateTime.of(date, LocalTime.of(hour, minute));
@@ -128,7 +121,7 @@ public class WakerAlarm {
 
   private String getFormattedUntil() {
     LocalDateTime fromDateTime = LocalDateTime.now();
-    LocalDateTime toDateTime = getFireDate();
+    LocalDateTime toDateTime   = getFireDate();
     if (fromDateTime.until(toDateTime, ChronoUnit.SECONDS) < 0) {
       return String.format("Went off %s ago!", getFormattedDifference(toDateTime, fromDateTime));
     } else {
@@ -177,16 +170,16 @@ public class WakerAlarm {
 
   public static WakerAlarm fromProperties(String id, Properties props, AlarmController alarmController) {
     String propSoundPath = props.getProperty(SOUND_PATH + id);
-    String propFireDate = props.getProperty(FIRE_DATE + id);
-    String propEnabled = props.getProperty(ENABLED + id);
+    String propFireDate  = props.getProperty(FIRE_DATE + id);
+    String propEnabled   = props.getProperty(ENABLED + id);
 
     File soundFile = null;
     if (!propSoundPath.equals("null")) {
       soundFile = new File(propSoundPath);
     }
-    long epochSecond = Long.parseLong(propFireDate);
-    LocalDateTime fireDate = LocalDateTime.ofEpochSecond(epochSecond, 0, ZoneOffset.UTC);
-    boolean enabled = Boolean.parseBoolean(propEnabled);
+    long          epochSecond = Long.parseLong(propFireDate);
+    LocalDateTime fireDate    = LocalDateTime.ofEpochSecond(epochSecond, 0, ZoneOffset.UTC);
+    boolean       enabled     = Boolean.parseBoolean(propEnabled);
 
     return new WakerAlarm(alarmController, id, soundFile, fireDate, enabled);
   }

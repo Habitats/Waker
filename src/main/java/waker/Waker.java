@@ -22,12 +22,12 @@ import waker.models.WakerAlarm;
 
 public class Waker extends Application {
 
-  private static final String VOLUME = "volume";
+  private static final String VOLUME     = "volume";
   private static final String INCREASING = "increasing_volume";
-  private static final String REPEAT = "repeat_song";
-  private WakerController controller;
-//  public static File defaultSound;
-  private Stage primaryStage;
+  private static final String REPEAT     = "repeat_song";
+  private WakerController       controller;
+  //  public static File defaultSound;
+  private Stage                 primaryStage;
   private List<AlarmController> alarms;
 
   public static void main(String[] args) {
@@ -58,8 +58,7 @@ public class Waker extends Application {
 
   private void setup() throws Exception {
     controller.setApplication(this);
-    controller.volumeSlider.valueProperty()
-        .addListener((observable, oldValue, newValue) -> onVolumeChanged(controller.getVolume()));
+    controller.volumeSlider.valueProperty().addListener((observable, oldValue, newValue) -> onVolumeChanged(controller.getVolume()));
     updateTitle(controller, controller.getVolume());
 //    defaultSound = new File(getClass().getResource("still_blastin.mp3").getFile());
   }
@@ -67,20 +66,20 @@ public class Waker extends Application {
   private void loadState() {
     try {
       Log.v("Loading previous state ...");
-      Properties props = new Properties();
-      FileInputStream in = new FileInputStream("waker.properties");
+      Properties      props = new Properties();
+      FileInputStream in    = new FileInputStream("waker.properties");
       props.load(in);
       in.close();
 
       props.keySet().stream() //
-          .map(String::valueOf).filter(k -> k.toString().startsWith(WakerAlarm.ID))//
-          .sorted(Comparator.<String>naturalOrder()) //
+          .map(String::valueOf).filter(k -> k.startsWith(WakerAlarm.ID))//
+          .sorted(Comparator.naturalOrder()) //
           .forEach(id -> addAlarm(props.getProperty(id), props));
 
       primaryStage.sizeToScene();
 
-      double volume = Double.parseDouble(props.getProperty(VOLUME));
-      boolean repeat = Boolean.parseBoolean(props.getProperty(REPEAT));
+      double  volume   = Double.parseDouble(props.getProperty(VOLUME));
+      boolean repeat   = Boolean.parseBoolean(props.getProperty(REPEAT));
       boolean increase = Boolean.parseBoolean(props.getProperty(INCREASING));
       controller.setVolume(volume);
       controller.setRepeat(repeat);
@@ -117,7 +116,7 @@ public class Waker extends Application {
 
   private void addAlarm(String id, Properties props) {
     AlarmController alarmController = createAndAddController();
-    WakerAlarm alarm = WakerAlarm.fromProperties(id, props, alarmController);
+    WakerAlarm      alarm           = WakerAlarm.fromProperties(id, props, alarmController);
     alarmController.setController(controller);
     alarmController.setAlarm(alarm);
     alarms.add(alarmController);
@@ -126,7 +125,7 @@ public class Waker extends Application {
   private AlarmController createAndAddController() {
     try {
       FXMLLoader alarmFxml = new FXMLLoader(getClass().getResource("gui/alarm.fxml"));
-      GridPane alarmView = alarmFxml.load();
+      GridPane   alarmView = alarmFxml.load();
       controller.alarmListView.getChildren().add(alarmView);
       return alarmFxml.getController();
     } catch (IOException e) {
