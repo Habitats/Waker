@@ -143,7 +143,7 @@ public class Waker extends Application {
     controller.titleLabel.setEffect(innerShadow);
   }
 
-  public void onVolumeChanged(double volume) {
+  private void onVolumeChanged(double volume) {
     updateTitle(controller, volume);
     alarms.forEach(a -> a.onVolumeChanged(volume));
   }

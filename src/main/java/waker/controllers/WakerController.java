@@ -1,6 +1,7 @@
 package waker.controllers;
 
 import javafx.event.ActionEvent;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
@@ -11,10 +12,11 @@ import waker.Waker;
 public class WakerController {
 
   public  Slider   volumeSlider;
-  public  CheckBox increasingCheckbox;
-  public  CheckBox repeatCheckbox;
+  private CheckBox increasingCheckbox;
+  private CheckBox repeatCheckbox;
   public  Label    titleLabel;
   public  VBox     alarmListView;
+  public  Button   addAlarmButton;
   private Waker    application;
 
   public void setApplication(Waker application) {

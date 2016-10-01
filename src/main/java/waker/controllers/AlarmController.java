@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import javafx.event.ActionEvent;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.DatePicker;
@@ -21,16 +22,19 @@ import waker.models.WakerAlarmListener;
 
 public class AlarmController implements WakerAlarmListener {
 
-  public  Label            soundLabel;
-  public  Label            countdownLabel;
-  public  ComboBox<String> hoursCombobox;
-  public  ComboBox<String> minutesCombobox;
-  public  GridPane         alarmView;
-  private WakerAlarm       alarm;
-  public  ToggleButton     alarmToggle;
-  public  DatePicker       datePicker;
-  private MediaPlayer      player;
-  private WakerController  controller;
+  public Label            soundLabel;
+  public Label            countdownLabel;
+  public ComboBox<String> hoursCombobox;
+  public ComboBox<String> minutesCombobox;
+  public GridPane         alarmView;
+  public Button           loadDefaultSoundButton;
+  public Button           loadSoundButton;
+  public ToggleButton     alarmToggle;
+  public DatePicker       datePicker;
+
+  private WakerAlarm      alarm;
+  private MediaPlayer     player;
+  private WakerController controller;
 
   public void onLoad(ActionEvent actionEvent) {
     FileChooser fileChooser = new FileChooser();

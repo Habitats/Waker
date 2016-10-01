@@ -37,7 +37,7 @@ public class WakerAlarm {
     initAlarmWatcher();
   }
 
-  public WakerAlarm(WakerAlarmListener listener, String id, File soundFile, LocalDateTime fireDate, boolean enabled) {
+  private WakerAlarm(WakerAlarmListener listener, String id, File soundFile, LocalDateTime fireDate, boolean enabled) {
     this.listener = listener;
     this.id = id;
     this.soundFile = soundFile;
