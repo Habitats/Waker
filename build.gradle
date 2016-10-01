@@ -1,14 +1,15 @@
 buildscript {
     dependencies {
-        classpath group: 'de.dynamicfiles.projects.gradle.plugins', name: 'javafx-gradle-plugin', version: '8.7.0'
+        classpath group: "de.dynamicfiles.projects.gradle.plugins", name: "javafx-gradle-plugin", version: "8.7.0"
     }
     repositories {
         mavenLocal()
         mavenCentral()
     }
 }
-apply plugin: 'java'
-apply plugin: 'javafx-gradle-plugin'
+apply plugin: "java"
+apply plugin: "scala"
+apply plugin: "javafx-gradle-plugin"
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -18,15 +19,32 @@ repositories {
     jcenter()
 }
 
-dependencies {
-    testCompile 'junit:junit:4.12'
+project.ext {
+    scalaBinary = "2.11"
+    scalaVersion = "2.11.8"
+    println "Common: Scala Binary: $scalaBinary - Scala Version: $scalaVersion"
 }
 
+dependencies {
+    testCompile "junit:junit:4.12"
+
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ["src"]
+        }
+        resources {
+            srcDirs = ["src"]
+        }
+    }
+}
 
 jfx {
     // See here for full list of settings: https://github.com/FibreFoX/javafx-gradle-plugin
-    mainClass = 'waker.Waker'
-    vendor = 'Waker'
+    mainClass = "waker.Waker"
+    vendor = "Waker"
     jfxAppOutputDir = "bin"
     nativeOutputDir = "bin/native"
     jfxMainAppJarName = "Waker.jar"
